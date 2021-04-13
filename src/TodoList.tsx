@@ -1,7 +1,9 @@
-import React from "react";
-import {FilterValuesTypes, TaskType} from "./App";
-import AddItemForm from "./AddItemForm";
-import EditableSpan from "./EditableSpan";
+import React from "react"
+import {FilterValuesTypes, TaskType} from "./App"
+import AddItemForm from "./AddItemForm"
+import EditableSpan from "./EditableSpan"
+import {Button, Checkbox, IconButton} from "@material-ui/core"
+import {Delete} from "@material-ui/icons"
 
 type TodoListPropsType = {
     title: string,
@@ -18,19 +20,25 @@ type TodoListPropsType = {
 }
 
 function TodoList(props: TodoListPropsType) {
-
     const tasks = props.tasks.map(t => {
         const changeStatus = () => props.changeTaskStatus(t.id, props.id);
         const removeTask = () => props.removeTask(t.id, props.id);
         const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.id)
         return (
             <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                <input type="checkbox" checked={t.isDone} onChange={changeStatus}/>
+                <Checkbox
+                    color={"primary"}
+                    size={"small"}
+                    checked={t.isDone}
+                    onChange={changeStatus}
+                />
                 <EditableSpan
                     title={t.title}
                     changeTitle={changeTaskTitle}
                 />
-                <button onClick={removeTask}>X</button>
+                <IconButton onClick={removeTask}>
+                    <Delete/>
+                </IconButton>
             </li>
         )
     })
@@ -46,32 +54,47 @@ function TodoList(props: TodoListPropsType) {
         props.addTasks(title, props.id)
     }
     const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.id)
-
+    const butVariantAll = props.todoListFilter === "all" ? "outlined" : "contained"
+    const buttonVariantActive = props.todoListFilter === "active" ? "outlined" : "contained"
+    const buttonVariantCompleted = props.todoListFilter === "completed" ? "outlined" : "contained"
     return (
         <div>
             <h3>
-                <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
-                <button onClick={removeTodoList}>X</button>
+                <EditableSpan title={nameTodoList} changeTitle={changeTodoListTitle}/>
+                <IconButton onClick={removeTodoList}>
+                    <Delete/>
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTask}/>
-            <ul>{tasks}</ul>
+            <ul style={{listStyle: "none"}}>{tasks}</ul>
             <div>
-                <button
+                <Button
+                    style={{marginRight: "5px"}}
                     className={allButtonClass}
+                    color={"primary"}
+                    size={"small"}
+                    variant={butVariantAll}
                     onClick={all}>All
-                </button>
-                <button
+                </Button>
+                <Button
+                    style={{marginRight: "5px"}}
                     className={actButtonClass}
+                    color={"primary"}
+                    size={"small"}
+                    variant={buttonVariantActive}
                     onClick={active}>Active
-                </button>
-                <button
+                </Button>
+                <Button
+                    style={{marginRight: "5px"}}
                     className={compButtonClass}
+                    color={"primary"}
+                    size={"small"}
+                    variant={buttonVariantCompleted}
                     onClick={completed}>Completed
-                </button>
+                </Button>
             </div>
         </div>
     )
-
 }
 
 export default TodoList
