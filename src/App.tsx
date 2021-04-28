@@ -63,11 +63,7 @@ function App() {
     })
 
     function addTasks(title: string, todoListID: string) {
-        const newTask: TaskType = {
-            id: v1(),
-            title: title,
-            isDone: false
-        }
+        const newTask: TaskType = {id: v1(), title: title, isDone: false}
         const updateTask = [newTask, ...tasks[todoListID]];
         setTasks({...tasks, [todoListID]: updateTask});
     }
