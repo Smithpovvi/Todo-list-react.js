@@ -4,7 +4,7 @@ import {EditableSpan} from '../EditableSpan/EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from '../Task/Task'
-import {FilterValuesType} from "../../AppWithRedux"
+import {FilterValuesType} from "../AppWithRedux/AppWithRedux"
 
 export type TaskType = {
     id: string
