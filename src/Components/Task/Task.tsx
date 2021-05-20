@@ -19,7 +19,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     }
     const onTitleChangeHandler = useCallback((newValue: string) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId)
-    }, [props.task.id, props.changeTaskTitle, props.todolistId]);
+    }, [props.task.id, props.changeTaskTitle, props.todolistId])
 
 
     return <div key={props.task.id} className={props.task.isDone ? 'is-done' : ''}>
@@ -28,7 +28,6 @@ export const Task = React.memo((props: TaskPropsType) => {
             color="primary"
             onChange={onChangeHandler}
         />
-
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
         <IconButton onClick={onClickHandler}>
             <Delete/>
