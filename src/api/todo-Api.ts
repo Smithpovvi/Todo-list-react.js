@@ -12,6 +12,9 @@ type TodoType = {
     order: number
     title: string
 }
+type TaskType = {
+
+}
 
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -35,4 +38,18 @@ export const todoAPI = {
         const promise = instance.delete<CommonTodoType<{}>>(`todo-lists/${todolistId}`)
         return promise
     },
+}
+export const taskAPI ={
+    getTask(todolistID: string){
+        return instance.get(`todo-lists/${todolistID}/tasks`)
+    },
+    createTask(todolistID: string, title: string){
+        return instance.post(`todo-lists/${todolistID}/tasks`,{title})
+    },
+    updateTask(todolistID: string, taskID: string){
+        return instance.put(`todo-lists/${todolistID}/tasks/${taskID}`)
+    },
+    deleteTask(todolistID: string, taskID: string){
+        return instance.delete(`todo-lists/${todolistID}/tasks/${taskID}`)
+    }
 }
