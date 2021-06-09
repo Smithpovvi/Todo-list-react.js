@@ -1,9 +1,5 @@
-import { Todolist } from "./../Todolist"
-import { type } from "os"
 import { Dispatch } from "redux"
-import { v1 } from "uuid"
 import { todolistsAPI, TodolistType } from "../api/todolists-api"
-import { TLSSocket } from "tls"
 
 export type RemoveTodolistActionType = {
     type: "REMOVE-TODOLIST"

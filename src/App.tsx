@@ -1,102 +1,89 @@
-import React, {useCallback, useEffect} from 'react'
-import './App.css';
-import {Todolist} from './Todolist';
-import {AddItemForm} from './AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
-import {Menu} from '@material-ui/icons';
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    FilterValuesType,
-    removeTodolistAC,
-    setTodolist,
-    setTodoThunk,
-    TodolistDomainType,
-    deleteTodoThunk,
-    addTodoThunk
-} from './state/todolists-reducer'
-import {addTaskAC, addTaskThunk, changeTaskStatusAC, changeTaskTitleAC, deleteTasksThunk, removeTaskAC} from './state/tasks-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
-import {TaskStatuses, TaskType, todolistsAPI} from './api/todolists-api'
-
+import React, { useCallback, useEffect } from "react"
+import "./App.css"
+import { Todolist } from "./Todolist"
+import { AddItemForm } from "./AddItemForm"
+import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from "@material-ui/core"
+import { Menu } from "@material-ui/icons"
+import { changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType, setTodoThunk, TodolistDomainType, deleteTodoThunk, addTodoThunk } from "./state/todolists-reducer"
+import { addTaskThunk, changeTaskStatusAC, changeTaskTitleAC, deleteTasksThunk, removeTaskAC } from "./state/tasks-reducer"
+import { useDispatch, useSelector } from "react-redux"
+import { AppRootStateType } from "./state/store"
+import { TaskStatuses, TaskType } from "./api/todolists-api"
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-
 function App() {
-
-    useEffect(() =>{
+    useEffect(() => {
         dispatch(setTodoThunk())
     })
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch();
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>((state) => state.todolists)
+    const tasks = useSelector<AppRootStateType, TasksStateType>((state) => state.tasks)
+    const dispatch = useDispatch()
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
-        dispatch(deleteTasksThunk(todolistId, id));
-    }, []);
+        dispatch(deleteTasksThunk(todolistId, id))
+    }, [])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
-        dispatch(addTaskThunk(todolistId, title));
-    }, []);
+        dispatch(addTaskThunk(todolistId, title))
+    }, [])
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const action = changeTaskStatusAC(id, status, todolistId);
-        dispatch(action);
-    }, []);
+        const action = changeTaskStatusAC(id, status, todolistId)
+        dispatch(action)
+    }, [])
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id, newTitle, todolistId);
-        dispatch(action);
-    }, []);
+        const action = changeTaskTitleAC(id, newTitle, todolistId)
+        dispatch(action)
+    }, [])
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value);
-        dispatch(action);
-    }, []);
+        const action = changeTodolistFilterAC(todolistId, value)
+        dispatch(action)
+    }, [])
 
     const removeTodolist = useCallback(function (id: string) {
-        dispatch(deleteTodoThunk(id));
-    }, []);
+        dispatch(deleteTodoThunk(id))
+    }, [])
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const action = changeTodolistTitleAC(id, title);
-        dispatch(action);
-    }, []);
+        const action = changeTodolistTitleAC(id, title)
+        dispatch(action)
+    }, [])
 
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodoThunk(title));
-    }, [dispatch]);
+    const addTodolist = useCallback(
+        (title: string) => {
+            dispatch(addTodoThunk(title))
+        },
+        [dispatch]
+    )
 
     return (
         <div className="App">
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
+                        <Menu />
                     </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
+                    <Typography variant="h6">News</Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container style={{padding: "20px"}}>
-                    <AddItemForm addItem={addTodolist}/>
+                <Grid container style={{ padding: "20px" }}>
+                    <AddItemForm addItem={addTodolist} />
                 </Grid>
                 <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-                            let allTodolistTasks = tasks[tl.id];
+                    {todolists.map((tl) => {
+                        let allTodolistTasks = tasks[tl.id]
 
-                            return <Grid item key={tl.id}>
-                                <Paper style={{padding: "10px"}}>
+                        return (
+                            <Grid item key={tl.id}>
+                                <Paper style={{ padding: "10px" }}>
                                     <Todolist
                                         id={tl.id}
                                         title={tl.title}
@@ -112,12 +99,12 @@ function App() {
                                     />
                                 </Paper>
                             </Grid>
-                        })
-                    }
+                        )
+                    })}
                 </Grid>
             </Container>
         </div>
-    );
+    )
 }
 
-export default App;
+export default App
