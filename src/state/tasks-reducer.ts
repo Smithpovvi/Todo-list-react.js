@@ -1,8 +1,10 @@
-import { AddTodolistType, RemoveTodolistType, SetTodolistType } from "./todolists-reducer"
+import { AddTodolistType, changeTodolistEntityStatus, ChangeTodolistEntityStatusType, RemoveTodolistType, SetTodolistType } from "./todolists-reducer"
 import { TaskStatuses, TaskType, todolistsAPI } from "../api/todolists-api"
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { AppRootStateType } from "./store"
+import { changeLoadingStatus, ChangeLoadingStatusType, setAppError, SetAppErrorType } from "./app-reducer"
+import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
 //
 //
 export type TasksStateType = {
@@ -14,7 +16,18 @@ export type ChangeTaskStatusType = ReturnType<typeof changeTaskStatus>
 export type ChangeTaskTitleType = ReturnType<typeof changeTaskTitle>
 export type SetTasksType = ReturnType<typeof setTasks>
 export type TodolistThunkCreatorType = ThunkAction<Promise<void>, AppRootStateType, unknown, ActionsType>
-type ActionsType = RemoveTaskType | AddTaskType | ChangeTaskStatusType | ChangeTaskTitleType | AddTodolistType | RemoveTodolistType | SetTodolistType | SetTasksType
+type ActionsType =
+    | RemoveTaskType
+    | AddTaskType
+    | ChangeTaskStatusType
+    | ChangeTaskTitleType
+    | AddTodolistType
+    | RemoveTodolistType
+    | SetTodolistType
+    | SetTasksType
+    | ChangeLoadingStatusType
+    | SetAppErrorType
+    | ChangeTodolistEntityStatusType
 //
 //
 const initialState: TasksStateType = {}
@@ -96,13 +109,36 @@ export const setTasks = (tasks: Array<TaskType>, todolistId: string) => {
 //
 //
 export const setTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
-    todolistsAPI.getTasks(todolistId).then((resp) => dispatch(setTasks(resp.data.items, todolistId)))
+    dispatch(changeLoadingStatus("loading"))
+    todolistsAPI.getTasks(todolistId).then((resp) => {
+        dispatch(setTasks(resp.data.items, todolistId))
+        dispatch(changeLoadingStatus("succeeded"))
+    })
 }
 export const deleteTasksThunk = (todolistId: string, taskID: string) => (dispatch: Dispatch) => {
-    todolistsAPI.deleteTask(todolistId, taskID).then(() => dispatch(removeTask(taskID, todolistId)))
+    dispatch(changeLoadingStatus("loading"))
+    todolistsAPI.deleteTask(todolistId, taskID).then(() => {
+        dispatch(removeTask(taskID, todolistId))
+        dispatch(changeLoadingStatus("succeeded"))
+    })
 }
 export const addTaskThunk = (todolistId: string, taskTitile: string) => (dispatch: Dispatch) => {
-    todolistsAPI.createTask(todolistId, taskTitile).then((res) => dispatch(addTask(res.data.data.item, todolistId)))
+    dispatch(changeLoadingStatus("loading"))
+    dispatch(changeTodolistEntityStatus(todolistId, "loading"))
+    todolistsAPI
+        .createTask(todolistId, taskTitile)
+        .then((res) => {
+            if (res.data.resultCode === 0) {
+                dispatch(addTask(res.data.data.item, todolistId))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+            dispatch(changeLoadingStatus("succeeded"))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+            dispatch(changeLoadingStatus("succeeded"))
+        })
 }
 export const changeTaskStatusThunk = (todolistId: string, taskId: string, status: TaskStatuses) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -110,6 +146,7 @@ export const changeTaskStatusThunk = (todolistId: string, taskId: string, status
         const tasksForCurrentTodo = allTasksFromState[todolistId]
         const currentTask = tasksForCurrentTodo.find((t) => t.id === taskId)
         if (currentTask) {
+            dispatch(changeLoadingStatus("loading"))
             todolistsAPI
                 .updateTask(todolistId, taskId, {
                     title: currentTask.title,
@@ -119,7 +156,10 @@ export const changeTaskStatusThunk = (todolistId: string, taskId: string, status
                     deadline: currentTask.deadline,
                     status: status,
                 })
-                .then(() => dispatch(changeTaskStatus(taskId, status, todolistId)))
+                .then(() => {
+                    dispatch(changeTaskStatus(taskId, status, todolistId))
+                    dispatch(changeLoadingStatus("succeeded"))
+                })
         }
     }
 }
@@ -129,6 +169,7 @@ export const changeTaskTitleThunk = (todolistId: string, taskId: string, title: 
         const tasksForCurrentTodo = allTasksFromState[todolistId]
         const currentTask = tasksForCurrentTodo.find((t) => t.id === taskId)
         if (currentTask) {
+            dispatch(changeLoadingStatus("loading"))
             todolistsAPI
                 .updateTask(todolistId, taskId, {
                     title: title,
@@ -138,7 +179,18 @@ export const changeTaskTitleThunk = (todolistId: string, taskId: string, title: 
                     deadline: currentTask.deadline,
                     status: currentTask.status,
                 })
-                .then(() => dispatch(changeTaskTitle(taskId, title, todolistId)))
+                .then((resp) => {
+                    if (resp.data.resultCode === 0) {
+                        dispatch(changeTaskTitle(taskId, title, todolistId))
+                    } else {
+                        handleServerAppError(resp.data, dispatch)
+                    }
+                    dispatch(changeLoadingStatus("succeeded"))
+                })
+                .catch((error) => {
+                    handleServerNetworkError(error, dispatch)
+                    dispatch(changeLoadingStatus("succeeded"))
+                })
         }
     }
 }
