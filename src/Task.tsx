@@ -4,26 +4,40 @@ import { EditableSpan } from "./EditableSpan"
 import { Delete } from "@material-ui/icons"
 import { TaskStatuses, TaskType } from "./api/todolists-api"
 import { useDispatch } from "react-redux"
-import { changeTaskStatusThunk, changeTaskTitleThunk, deleteTasksThunk } from "./state/tasks-reducer"
+import {
+    changeTaskStatusThunk,
+    changeTaskTitleThunk,
+    deleteTasksThunk,
+} from "./state/tasks-reducer"
+import { RequestStatusType } from "./state/app-reducer"
 
 type TaskPropsType = {
     task: TaskType
     todolistId: string
+    entityStatusForTask: RequestStatusType
+    entityStatusForTodo?: RequestStatusType
 }
 export const Task = React.memo((props: TaskPropsType) => {
     const dispatch = useDispatch()
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         dispatch(changeTaskStatusThunk(todolistId, id, status))
     }, [])
-    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string)=> {
+    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         dispatch(changeTaskTitleThunk(todolistId, id, newTitle))
     }, [])
-    const onClickHandler = useCallback(() => dispatch(deleteTasksThunk(props.todolistId, props.task.id)), [props.todolistId, props.task.id])
+    const onClickHandler = useCallback(
+        () => dispatch(deleteTasksThunk(props.todolistId, props.task.id)),
+        [props.todolistId, props.task.id]
+    )
 
     const onChangeHandler = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = e.currentTarget.checked
-            changeStatus(props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
+            changeStatus(
+                props.task.id,
+                newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New,
+                props.todolistId
+            )
         },
         [props.task.id, props.todolistId]
     )
@@ -36,10 +50,22 @@ export const Task = React.memo((props: TaskPropsType) => {
     )
 
     return (
-        <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}>
-            <Checkbox checked={props.task.status === TaskStatuses.Completed} color="primary" onChange={onChangeHandler} />
-            <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} />
-            <IconButton onClick={onClickHandler}>
+        <div
+            key={props.task.id}
+            className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}
+        >
+            <Checkbox
+                checked={props.task.status === TaskStatuses.Completed}
+                color="primary"
+                onChange={onChangeHandler}
+                disabled={props.entityStatusForTask === "loading"}
+            />
+            <EditableSpan
+                value={props.task.title}
+                onChange={onTitleChangeHandler}
+                entityStatusForTask={props.entityStatusForTask}
+            />
+            <IconButton onClick={onClickHandler} disabled={props.entityStatusForTask === "loading"}>
                 <Delete />
             </IconButton>
         </div>

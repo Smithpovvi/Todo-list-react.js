@@ -2,7 +2,13 @@ import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { todolistsAPI, TodolistType } from "../api/todolists-api"
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
-import { changeLoadingStatus, ChangeLoadingStatusType, RequestStatusType, setAppError, SetAppErrorType } from "./app-reducer"
+import {
+    changeLoadingStatus,
+    ChangeLoadingStatusType,
+    RequestStatusType,
+    setAppError,
+    SetAppErrorType,
+} from "./app-reducer"
 import { AppRootStateType } from "./store"
 //
 //
@@ -17,7 +23,12 @@ export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
     entityStatus: RequestStatusType
 }
-export type TodolistThunkCreatorType = ThunkAction<Promise<void>, AppRootStateType, unknown, ActionsType>
+export type TodolistThunkCreatorType = ThunkAction<
+    Promise<void>,
+    AppRootStateType,
+    unknown,
+    ActionsType
+>
 type ActionsType =
     | RemoveTodolistType
     | AddTodolistType
@@ -32,7 +43,10 @@ type ActionsType =
 const initialState: Array<TodolistDomainType> = []
 //
 //
-export const todolistsReducer = (state = initialState, action: ActionsType): Array<TodolistDomainType> => {
+export const todolistsReducer = (
+    state = initialState,
+    action: ActionsType
+): Array<TodolistDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST": {
             return state.filter((tl) => tl.id !== action.id)
@@ -84,7 +98,8 @@ export const changeTodolistFilter = (id: string, filter: FilterValuesType) => {
     return { type: "CHANGE-TODOLIST-FILTER", id: id, filter: filter } as const
 }
 export const setTodolist = (todos: Array<TodolistType>) => ({ type: "SET-TODO", todos } as const)
-export const changeTodolistEntityStatus = (todoId: string, entityStatus: RequestStatusType) => ({ type: "CHANGE-ENTITYSTATUS", todoId, entityStatus } as const)
+export const changeTodolistEntityStatus = (todoId: string, entityStatus: RequestStatusType) =>
+    ({ type: "CHANGE-ENTITYSTATUS", todoId, entityStatus } as const)
 //
 //
 export const setTodoThunk = () => (dispatch: Dispatch) => {
@@ -122,18 +137,22 @@ export const deleteTodoThunk = (id: string) => (dispatch: Dispatch) => {
 }
 export const changeTitleTodoThunk = (id: string, title: string) => (dispatch: Dispatch) => {
     dispatch(changeLoadingStatus("loading"))
+    dispatch(changeTodolistEntityStatus(id, "loading"))
     todolistsAPI
         .updateTodolist(id, title)
         .then((resp) => {
             if (resp.data.resultCode === 0) {
                 dispatch(changeTodolistTitle(id, title))
+                dispatch(changeTodolistEntityStatus(id, "succeeded"))
             } else {
                 handleServerAppError(resp.data, dispatch)
             }
             dispatch(changeLoadingStatus("succeeded"))
+            dispatch(changeTodolistEntityStatus(id, "succeeded"))
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
             dispatch(changeLoadingStatus("succeeded"))
+            dispatch(changeTodolistEntityStatus(id, "succeeded"))
         })
 }

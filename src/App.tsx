@@ -2,7 +2,17 @@ import React, { useCallback, useEffect } from "react"
 import "./App.css"
 import { Todolist } from "./Todolist"
 import { AddItemForm } from "./AddItemForm"
-import { AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography } from "@material-ui/core"
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography,
+} from "@material-ui/core"
 import { Menu } from "@material-ui/icons"
 import { setTodoThunk, TodolistDomainType, addTodoThunk } from "./state/todolists-reducer"
 import { useDispatch, useSelector } from "react-redux"
@@ -17,7 +27,9 @@ function App() {
         dispatch(setTodoThunk())
     }, [])
     //
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>((state) => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
+        (state) => state.todolists
+    )
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
     const dispatch = useDispatch()
     //
@@ -30,7 +42,7 @@ function App() {
     //
     return (
         <div className="App">
-            <ErrorSnackbar/>
+            <ErrorSnackbar />
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -43,14 +55,14 @@ function App() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{ padding: "20px" }}>
-                    <AddItemForm addItem={addTodolist} disabled={"idle"}/>
+                    <AddItemForm addItem={addTodolist} disabled={"idle"} />
                 </Grid>
                 <Grid container spacing={3}>
                     {todolists.map((tl) => {
                         return (
                             <Grid item key={tl.id}>
                                 <Paper style={{ padding: "10px" }} elevation={3}>
-                                    <Todolist id={tl.id} entityStatus={tl.entityStatus}/>
+                                    <Todolist id={tl.id} entityStatus={tl.entityStatus} />
                                 </Paper>
                             </Grid>
                         )
