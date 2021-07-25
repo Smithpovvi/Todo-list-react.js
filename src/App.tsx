@@ -1,73 +1,59 @@
-import React, { useCallback, useEffect } from "react"
-import "./App.css"
-import { Todolist } from "./Todolist"
-import { AddItemForm } from "./AddItemForm"
-import {
-    AppBar,
-    Button,
-    Container,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Paper,
-    Toolbar,
-    Typography,
-} from "@material-ui/core"
-import { Menu } from "@material-ui/icons"
-import { setTodoThunk, TodolistDomainType, addTodoThunk } from "./state/todolists-reducer"
+import React, { useEffect } from "react"
+import { Redirect, Route, Switch } from "react-router-dom"
+import TodoListsContainer from "./utils/features/todolist/TodoListsContainer"
 import { useDispatch, useSelector } from "react-redux"
-import { AppRootStateType } from "./state/store"
-import { RequestStatusType } from "./state/app-reducer"
+import { initialized, logout } from "./state/app-reducer"
 import { ErrorSnackbar } from "./ErrorSnackbar"
-//
-//
-function App() {
-    //
-    useEffect(() => {
-        dispatch(setTodoThunk())
-    }, [])
-    //
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
-        (state) => state.todolists
-    )
-    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+import AppBar from "@material-ui/core/AppBar/AppBar"
+import Toolbar from "@material-ui/core/Toolbar/Toolbar"
+import IconButton from "@material-ui/core/IconButton/IconButton"
+import { Menu } from "@material-ui/icons"
+import Button from "@material-ui/core/Button/Button"
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress"
+import Container from "@material-ui/core/Container/Container"
+import LoginingContainer from "./utils/features/logining/LoginingContainer"
+import { getAppState } from "./selectors"
+
+const App: React.FunctionComponent = () => {
     const dispatch = useDispatch()
-    //
-    const addTodolist = useCallback(
-        (title: string) => {
-            dispatch(addTodoThunk(title))
-        },
-        [dispatch]
-    )
-    //
+    useEffect(() => {
+        dispatch(initialized())
+    }, [])
+    const { status, isInitialized, isLogining } = useSelector(getAppState)
+    const logoutMe = () => {
+        dispatch(logout())
+    }
+
     return (
-        <div className="App">
+        <div>
             <ErrorSnackbar />
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu />
-                    </IconButton>
-                    <Typography variant="h6">News</Typography>
-                    <Button color="inherit">Login</Button>
+                <Toolbar variant={"dense"} style={{ backgroundColor: "#00418c" }}>
+                    {isLogining && (
+                        <>
+                            <IconButton edge="start" color="secondary" aria-label="menu">
+                                <Menu />
+                            </IconButton>
+
+                            <Button color="inherit" onClick={logoutMe}>
+                                Logout
+                            </Button>
+                        </>
+                    )}
                 </Toolbar>
                 {status === "loading" && <LinearProgress color={"secondary"} />}
             </AppBar>
             <Container fixed>
-                <Grid container style={{ padding: "20px" }}>
-                    <AddItemForm addItem={addTodolist} disabled={"idle"} />
-                </Grid>
-                <Grid container spacing={3}>
-                    {todolists.map((tl) => {
-                        return (
-                            <Grid item key={tl.id}>
-                                <Paper style={{ padding: "10px" }} elevation={3}>
-                                    <Todolist id={tl.id} entityStatus={tl.entityStatus} />
-                                </Paper>
-                            </Grid>
-                        )
-                    })}
-                </Grid>
+                {!isInitialized ? (
+                    <div></div>
+                ) : (
+                    <Switch>
+                        <Route exact path="/" render={() => <TodoListsContainer />} />
+                        <Route path="/logining" render={() => <LoginingContainer />} />
+                        <Route path={"/404"} render={() => <h1>404: PAGE NOT FOUND</h1>} />
+                        <Redirect from={"*"} to={"/404"} />
+                    </Switch>
+                )}
             </Container>
         </div>
     )

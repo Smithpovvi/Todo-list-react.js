@@ -1,4 +1,3 @@
-
 import { Dispatch } from 'redux';
 import { ResponseType } from '../api/todolists-api';
 import { changeLoadingStatus, ChangeLoadingStatusType, setAppError, SetAppErrorType } from '../state/app-reducer';

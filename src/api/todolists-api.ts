@@ -50,6 +50,12 @@ type GetTasksResponse = {
     totalCount: number
     items: TaskType[]
 }
+export type LoginingDataType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: boolean
+}
 //
 //
 const instance = axios.create({
@@ -67,7 +73,9 @@ export const todolistsAPI = {
         return promise
     },
     createTodolist(title: string) {
-        const promise = instance.post<ResponseType<{ item: TodolistType }>>("todo-lists", { title: title })
+        const promise = instance.post<ResponseType<{ item: TodolistType }>>("todo-lists", {
+            title: title,
+        })
         return promise
     },
     deleteTodolist(id: string) {
@@ -85,9 +93,29 @@ export const todolistsAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     createTask(todolistId: string, taskTitile: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, { title: taskTitile })
+        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {
+            title: taskTitile,
+        })
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
+        return instance.put<ResponseType<TaskType>>(
+            `todo-lists/${todolistId}/tasks/${taskId}`,
+            model
+        )
+    },
+    loginIn(LoginingData: LoginingDataType) {
+        return instance.post<ResponseType<{ userId: number }>>("auth/login", LoginingData)
+    },
+    authMe() {
+        return instance.get<
+            ResponseType<{
+                userId: number
+                email: string
+                login: string
+            }>
+        >("auth/me")
+    },
+    logout() {
+        return instance.delete<ResponseType>("auth/login")
     },
 }
