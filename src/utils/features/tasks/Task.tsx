@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useCallback } from "react"
 import { Checkbox, IconButton } from "@material-ui/core"
-import { EditableSpan } from "./EditableSpan"
+import { EditableSpan } from "../editableSpan/EditableSpan"
 import { Delete } from "@material-ui/icons"
-import { TaskStatuses, TaskType } from "./api/todolists-api"
+import { TaskStatuses, TaskType } from "../../../main/server-api/todolists-api"
 import { useDispatch } from "react-redux"
 import {
     changeTaskStatusThunk,
     changeTaskTitleThunk,
     deleteTasksThunk,
-} from "./state/tasks-reducer"
-import { RequestStatusType } from "./state/app-reducer"
+} from "../../../main/bll/reducers/tasks-reducer"
+import { RequestStatusType } from "../../../main/bll/reducers/app-reducer"
 
 type TaskPropsType = {
     task: TaskType

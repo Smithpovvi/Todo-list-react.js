@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from "react"
-import { AddItemForm } from "./AddItemForm"
-import { EditableSpan } from "./EditableSpan"
+import { AddItemForm } from "../addItemForm/AddItemForm"
+import { EditableSpan } from "../editableSpan/EditableSpan"
 import { Button, IconButton } from "@material-ui/core"
 import { Delete } from "@material-ui/icons"
-import { Task } from "./Task"
-import { TaskStatuses } from "./api/todolists-api"
-import { changeTitleTodoThunk, changeTodolistFilter, deleteTodoThunk, FilterValuesType, TodolistDomainType } from "./state/todolists-reducer"
+import { Task } from "../tasks/Task"
+import { TaskStatuses } from "../../../main/server-api/todolists-api"
+import { changeTitleTodoThunk, changeTodolistFilter, deleteTodoThunk, FilterValuesType, TodolistDomainType } from "../../../main/bll/reducers/todolists-reducer"
 import { useDispatch, useSelector } from "react-redux"
-import { addTaskThunk, setTasksThunk, TasksStateType } from "./state/tasks-reducer"
-import { AppRootStateType } from "./state/store"
-import { RequestStatusType } from "./state/app-reducer"
+import { addTaskThunk, setTasksThunk, TasksStateType } from "../../../main/bll/reducers/tasks-reducer"
+import { AppRootStateType } from "../../../main/bll/store"
+import { RequestStatusType } from "../../../main/bll/reducers/app-reducer"
 
 type PropsType = {
     id: string

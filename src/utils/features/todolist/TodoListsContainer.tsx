@@ -3,10 +3,10 @@ import Paper from "@material-ui/core/Paper/Paper"
 import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
-import { AddItemForm } from "../../../AddItemForm"
-import { getAppState, getTodoState } from "../../../selectors"
-import { addTodoThunk, setTodoThunk } from "../../../state/todolists-reducer"
-import { Todolist } from "../../../Todolist"
+import { AddItemForm } from "../addItemForm/AddItemForm"
+import { getAppState, getTodoState } from "../../selectors/selectors"
+import { addTodoThunk, setTodoThunk } from "../../../main/bll/reducers/todolists-reducer"
+import { Todolist } from "./Todolist"
 
 const TodoListsContainer: React.FunctionComponent = () => {
     const [...todolists] = useSelector(getTodoState)
