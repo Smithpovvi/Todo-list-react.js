@@ -1,8 +1,6 @@
 import { Dispatch } from "redux"
-import { LoginingDataType, todolistsAPI } from "../api/todolists-api"
-import { handleServerNetworkError } from "../utils/error-utils"
-import { setTodoThunk } from "./todolists-reducer"
-
+import { handleServerNetworkError } from "../../../utils/features/errors/error-utils"
+import { LoginingDataType, todolistsAPI } from "../../server-api/todolists-api"
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export type appReducerStateType = typeof initialState
 export type AppActionType =

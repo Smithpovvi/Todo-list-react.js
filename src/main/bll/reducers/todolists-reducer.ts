@@ -1,7 +1,10 @@
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
-import { todolistsAPI, TodolistType } from "../api/todolists-api"
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
+import { todolistsAPI, TodolistType } from "../../server-api/todolists-api"
+import {
+    handleServerAppError,
+    handleServerNetworkError,
+} from "../../../utils/features/errors/error-utils"
 import {
     changeLoadingStatus,
     ChangeLoadingStatusType,
@@ -9,9 +12,9 @@ import {
     setAppError,
     SetAppErrorType,
 } from "./app-reducer"
-import { AppRootStateType } from "./store"
-//
-//
+import { AppRootStateType } from "../store"
+
+
 export type RemoveTodolistType = ReturnType<typeof removeTodolist>
 export type AddTodolistType = ReturnType<typeof addTodolist>
 export type ChangeTodolistTitleType = ReturnType<typeof changeTodolistTitle>

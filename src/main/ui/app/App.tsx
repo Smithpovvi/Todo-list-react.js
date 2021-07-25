@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
-import TodoListsContainer from "./utils/features/todolist/TodoListsContainer"
+import TodoListsContainer from "../../../utils/features/todolist/TodoListsContainer"
 import { useDispatch, useSelector } from "react-redux"
-import { initialized, logout } from "./state/app-reducer"
-import { ErrorSnackbar } from "./ErrorSnackbar"
+import { initialized, logout } from "../../bll/reducers/app-reducer"
+import { ErrorSnackbar } from "../../../utils/features/errors/errorSnackBar/ErrorSnackbar"
 import AppBar from "@material-ui/core/AppBar/AppBar"
 import Toolbar from "@material-ui/core/Toolbar/Toolbar"
 import IconButton from "@material-ui/core/IconButton/IconButton"
@@ -11,8 +11,8 @@ import { Menu } from "@material-ui/icons"
 import Button from "@material-ui/core/Button/Button"
 import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress"
 import Container from "@material-ui/core/Container/Container"
-import LoginingContainer from "./utils/features/logining/LoginingContainer"
-import { getAppState } from "./selectors"
+import LoginingContainer from "../../../utils/features/logining/LoginingContainer"
+import { getAppState } from "../../../utils/selectors/selectors"
 
 const App: React.FunctionComponent = () => {
     const dispatch = useDispatch()

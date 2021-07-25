@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core"
 import { useFormik } from "formik"
 import Paper from "@material-ui/core/Paper/Paper"
-import { LoginingDataType } from "../../../api/todolists-api"
+import { LoginingDataType } from "../../../main/server-api/todolists-api"
 import { Redirect } from "react-router-dom"
 
 type LoginingPropsType = {

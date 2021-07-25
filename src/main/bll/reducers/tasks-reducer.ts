@@ -5,10 +5,10 @@ import {
     RemoveTodolistType,
     SetTodolistType,
 } from "./todolists-reducer"
-import { TaskStatuses, TaskType, todolistsAPI } from "../api/todolists-api"
+import { TaskStatuses, TaskType, todolistsAPI } from "../../server-api/todolists-api"
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
-import { AppRootStateType } from "./store"
+import { AppRootStateType } from "../store"
 import {
     changeLoadingStatus,
     ChangeLoadingStatusType,
@@ -16,9 +16,12 @@ import {
     setAppError,
     SetAppErrorType,
 } from "./app-reducer"
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
-//
-//
+import {
+    handleServerAppError,
+    handleServerNetworkError,
+} from "../../../utils/features/errors/error-utils"
+
+
 type TaskStateRootType = TaskType & {
     entityStatus: RequestStatusType
 }
@@ -173,7 +176,7 @@ export const addTaskThunk = (todolistId: string, taskTitile: string) => (dispatc
         .createTask(todolistId, taskTitile)
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(addTask(res.data.data.item, todolistId))  
+                dispatch(addTask(res.data.data.item, todolistId))
             } else {
                 handleServerAppError(res.data, dispatch)
             }

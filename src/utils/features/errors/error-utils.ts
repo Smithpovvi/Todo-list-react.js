@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
-import { ResponseType } from '../api/todolists-api';
-import { changeLoadingStatus, ChangeLoadingStatusType, setAppError, SetAppErrorType } from '../state/app-reducer';
+import { ResponseType } from '../../../main/server-api/todolists-api';
+import { changeLoadingStatus, ChangeLoadingStatusType, setAppError, SetAppErrorType } from '../../../main/bll/reducers/app-reducer';
 
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
