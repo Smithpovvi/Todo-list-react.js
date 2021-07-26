@@ -25,7 +25,6 @@ type FormErrorType = {
 }
 
 export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
-    
     const { loginIn, isLoginig } = props
 
     const formik = useFormik({
@@ -106,6 +105,7 @@ export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
                                     control={
                                         <Checkbox
                                             name={"rememberMe"}
+                                            value={formik.values.rememberMe}
                                             onChange={formik.handleChange}
                                         />
                                     }
