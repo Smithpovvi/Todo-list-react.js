@@ -22,7 +22,7 @@ import {
 } from "../../../utils/features/errors/error-utils"
 
 
-type TaskStateRootType = TaskType & {
+export type TaskStateRootType = TaskType & {
     entityStatus: RequestStatusType
 }
 export type TasksStateType = {
