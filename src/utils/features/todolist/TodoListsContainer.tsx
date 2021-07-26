@@ -13,8 +13,9 @@ const TodoListsContainer: React.FunctionComponent = () => {
     const { isLogining } = useSelector(getAppState)
 
     useEffect(() => {
-        if (!isLogining) return
-        dispatch(setTodoThunk())
+        if (isLogining) {
+            dispatch(setTodoThunk())
+        } else return
     }, [])
 
     const dispatch = useDispatch()

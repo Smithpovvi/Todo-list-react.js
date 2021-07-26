@@ -25,7 +25,9 @@ type FormErrorType = {
 }
 
 export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
+    
     const { loginIn, isLoginig } = props
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -48,7 +50,9 @@ export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
             loginIn(values)
         },
     })
+
     if (isLoginig) return <Redirect to={"/"} />
+
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"center"}>
             <Grid item xs={4} style={{ marginTop: "100px" }}>
