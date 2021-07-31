@@ -9,7 +9,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
     <React.StrictMode>
-        <HashRouter>
+        <HashRouter basename={"/"}>
             <Provider store={store}>
                 <App />
             </Provider>
