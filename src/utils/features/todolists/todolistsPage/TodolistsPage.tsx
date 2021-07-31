@@ -1,21 +1,21 @@
-import Grid from "@material-ui/core/Grid/Grid"
-import Paper from "@material-ui/core/Paper/Paper"
-import React from "react"
-import { Redirect } from "react-router-dom"
-import { TodolistDomainType } from "../../../../main/bll/reducers/todolists-reducer"
-import { AddItemForm } from "../../addItemForm/AddItemForm"
-import TodolistContainer from "../todolist/TodolistContainer"
+import Grid from "@material-ui/core/Grid/Grid";
+import Paper from "@material-ui/core/Paper/Paper";
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { TodolistDomainType } from "../../../../main/bll/reducers/todolists-reducer";
+import { AddItemForm } from "../../addItemForm/AddItemForm";
+import TodolistContainer from "../todolist/TodolistContainer";
 
 type TodolistsPageType = {
-    isLogining: boolean
-    addTodolist: (title: string) => void
-    todolists: Array<TodolistDomainType>
-}
+    isLogining: boolean;
+    addTodolist: (title: string) => void;
+    todolists: Array<TodolistDomainType>;
+};
 
 const TodolistsPage: React.FunctionComponent<TodolistsPageType> = (props) => {
-    const { isLogining, addTodolist, todolists } = props
+    const { isLogining, addTodolist, todolists } = props;
 
-    if (!isLogining) return <Redirect to={"/logining"} />
+    if (!isLogining) return <Redirect to={"/logining"} />;
 
     return (
         <>
@@ -35,11 +35,11 @@ const TodolistsPage: React.FunctionComponent<TodolistsPageType> = (props) => {
                                 />
                             </Paper>
                         </Grid>
-                    )
+                    );
                 })}
             </Grid>
         </>
-    )
-}
+    );
+};
 
-export default TodolistsPage
+export default TodolistsPage;

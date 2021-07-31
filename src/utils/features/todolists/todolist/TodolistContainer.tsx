@@ -1,61 +1,58 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect } from "react";
 import {
     changeTitleTodoThunk,
     changeTodolistFilter,
     deleteTodoThunk,
     FilterValuesType,
-} from "../../../../main/bll/reducers/todolists-reducer"
-import { useDispatch, useSelector } from "react-redux"
-import {
-    addTaskThunk,
-    setTasksThunk,
-} from "../../../../main/bll/reducers/tasks-reducer"
-import Todolist from "./Todolist"
-import { getTaskState } from "../../../selectors/selectors"
-import { RequestStatusType } from "../../../../main/bll/reducers/app-reducer"
+} from "../../../../main/bll/reducers/todolists-reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { addTaskThunk, setTasksThunk } from "../../../../main/bll/reducers/tasks-reducer";
+import Todolist from "./Todolist";
+import { getTaskState } from "../../../selectors/selectors";
+import { RequestStatusType } from "../../../../main/bll/reducers/app-reducer";
 
 type TodolistContPropsType = {
-    id: string
-    entityStatus: RequestStatusType
-    title: string
-    filter: FilterValuesType
-}
+    id: string;
+    entityStatus: RequestStatusType;
+    title: string;
+    filter: FilterValuesType;
+};
 
 const TodolistContainer: React.FunctionComponent<TodolistContPropsType> = React.memo((props) => {
-    const { id, entityStatus, title, filter } = props
+    const { id, entityStatus, title, filter } = props;
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setTasksThunk(id))
-    }, [id])
-    
-    let allTasksFromState = useSelector(getTaskState)
+        dispatch(setTasksThunk(id));
+    }, [id]);
 
-    let tasks = allTasksFromState[id]
+    let allTasksFromState = useSelector(getTaskState);
+
+    let tasks = allTasksFromState[id];
 
     const addTask = useCallback(
         (title: string) => {
-            dispatch(addTaskThunk(id, title))
+            dispatch(addTaskThunk(id, title));
         },
         [id]
-    )
+    );
 
     const removeTodolist = useCallback(() => {
-        dispatch(deleteTodoThunk(props.id))
-    }, [])
+        dispatch(deleteTodoThunk(props.id));
+    }, []);
 
     const changeTodolistTitle = useCallback(
         (title: string) => {
-            dispatch(changeTitleTodoThunk(id, title))
+            dispatch(changeTitleTodoThunk(id, title));
         },
         [id]
-    )
+    );
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
-        const action = changeTodolistFilter(todolistId, value)
-        dispatch(action)
-    }, [])
+        const action = changeTodolistFilter(todolistId, value);
+        dispatch(action);
+    }, []);
 
     return (
         <Todolist
@@ -69,7 +66,7 @@ const TodolistContainer: React.FunctionComponent<TodolistContPropsType> = React.
             tasks={tasks}
             title={title}
         />
-    )
-})
+    );
+});
 
-export default TodolistContainer
+export default TodolistContainer;

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
     Checkbox,
     FormControl,
@@ -8,49 +8,50 @@ import {
     TextField,
     Button,
     Grid,
-} from "@material-ui/core"
-import { useFormik } from "formik"
-import Paper from "@material-ui/core/Paper/Paper"
-import { LoginingDataType } from "../../../main/server-api/todolists-api"
-import { Redirect } from "react-router-dom"
+} from "@material-ui/core";
+import { useFormik } from "formik";
+import Paper from "@material-ui/core/Paper/Paper";
+import { LoginingDataType } from "../../../main/server-api/todolists-api";
+import { Redirect } from "react-router-dom";
 
 type LoginingPropsType = {
-    loginIn: (loginingData: LoginingDataType) => void
-    isLoginig: boolean
-}
+    loginIn: (loginingData: LoginingDataType) => void;
+    isLoginig: boolean;
+};
 
 type FormErrorType = {
-    email?: string
-    password?: string
-}
+    email?: string;
+    password?: string;
+};
 
 export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
-    const { loginIn, isLoginig } = props
+    const { loginIn, isLoginig } = props;
 
     const formik = useFormik({
         initialValues: {
             email: "",
             password: "",
             rememberMe: false,
+            captcha: true,
         },
         validate: (values) => {
-            const errors: FormErrorType = {}
+            const errors: FormErrorType = {};
             if (!values.email) {
-                errors.email = "This field required"
+                errors.email = "This field required";
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = "Invalid email address"
+                errors.email = "Invalid email address";
             }
             if (!values.password) {
-                errors.password = "This field required"
+                errors.password = "This field required";
             }
-            return errors
+            return errors;
         },
         onSubmit: (values) => {
-            loginIn(values)
+            loginIn(values);
         },
-    })
+    });
 
-    if (isLoginig) return <Redirect to={"/"} />
+    if (isLoginig) return <Redirect to={"/"} />;
 
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"center"}>
@@ -124,5 +125,5 @@ export const Logining: React.FunctionComponent<LoginingPropsType> = (props) => {
                 </form>
             </Grid>
         </Grid>
-    )
-}
+    );
+};

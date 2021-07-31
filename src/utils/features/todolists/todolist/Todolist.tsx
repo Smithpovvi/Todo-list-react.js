@@ -1,25 +1,25 @@
-import React, { useCallback } from "react"
-import { AddItemForm } from "../../addItemForm/AddItemForm"
-import { EditableSpan } from "../../editableSpan/EditableSpan"
-import { Button, IconButton } from "@material-ui/core"
-import { Delete } from "@material-ui/icons"
-import { TaskStatuses } from "../../../../main/server-api/todolists-api"
-import { FilterValuesType } from "../../../../main/bll/reducers/todolists-reducer"
-import { TaskStateRootType } from "../../../../main/bll/reducers/tasks-reducer"
-import { RequestStatusType } from "../../../../main/bll/reducers/app-reducer"
-import TasksContainer from "../../tasks/TaskContainer"
+import React, { useCallback } from "react";
+import { AddItemForm } from "../../addItemForm/AddItemForm";
+import { EditableSpan } from "../../editableSpan/EditableSpan";
+import { Button, IconButton } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
+import { TaskStatuses } from "../../../../main/server-api/todolists-api";
+import { FilterValuesType } from "../../../../main/bll/reducers/todolists-reducer";
+import { TaskStateRootType } from "../../../../main/bll/reducers/tasks-reducer";
+import { RequestStatusType } from "../../../../main/bll/reducers/app-reducer";
+import TasksContainer from "../../tasks/TaskContainer";
 
 type TodolistPropsType = {
-    id: string
-    filter: FilterValuesType
-    tasks: Array<TaskStateRootType>
-    title: string
-    entityStatus: RequestStatusType
-    changeTodolistTitle: (title: string) => void
-    removeTodolist: () => void
-    addTask: (title: string) => void
-    changeFilter: (newFilter: FilterValuesType, id: string) => void
-}
+    id: string;
+    filter: FilterValuesType;
+    tasks: Array<TaskStateRootType>;
+    title: string;
+    entityStatus: RequestStatusType;
+    changeTodolistTitle: (title: string) => void;
+    removeTodolist: () => void;
+    addTask: (title: string) => void;
+    changeFilter: (newFilter: FilterValuesType, id: string) => void;
+};
 
 const Todolist: React.FunctionComponent<TodolistPropsType> = React.memo((props) => {
     const {
@@ -32,24 +32,24 @@ const Todolist: React.FunctionComponent<TodolistPropsType> = React.memo((props) 
         addTask,
         id,
         entityStatus,
-    } = props
+    } = props;
 
-    const onAllClickHandler = useCallback(() => changeFilter("all", id), [id, changeFilter])
+    const onAllClickHandler = useCallback(() => changeFilter("all", id), [id, changeFilter]);
 
-    const onActiveClickHandler = useCallback(() => changeFilter("active", id), [id, changeFilter])
+    const onActiveClickHandler = useCallback(() => changeFilter("active", id), [id, changeFilter]);
 
     const onCompletedClickHandler = useCallback(
         () => changeFilter("completed", id),
         [id, changeFilter]
-    )
+    );
 
-    let tasksFiltered: Array<TaskStateRootType> = [...tasks]
+    let tasksFiltered: Array<TaskStateRootType> = [...tasks];
 
     if (filter === "active") {
-        tasksFiltered = tasksFiltered.filter((t) => t.status === TaskStatuses.New)
+        tasksFiltered = tasksFiltered.filter((t) => t.status === TaskStatuses.New);
     }
     if (filter === "completed") {
-        tasksFiltered = tasksFiltered.filter((t) => t.status === TaskStatuses.Completed)
+        tasksFiltered = tasksFiltered.filter((t) => t.status === TaskStatuses.Completed);
     }
 
     return (
@@ -99,7 +99,7 @@ const Todolist: React.FunctionComponent<TodolistPropsType> = React.memo((props) 
                 </Button>
             </div>
         </div>
-    )
-})
+    );
+});
 
-export default Todolist
+export default Todolist;

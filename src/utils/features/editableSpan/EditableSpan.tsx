@@ -1,29 +1,29 @@
-import React, { ChangeEvent, useState } from "react"
-import { TextField } from "@material-ui/core"
-import { RequestStatusType } from "../../../main/bll/reducers/app-reducer"
+import React, { ChangeEvent, useState } from "react";
+import { TextField } from "@material-ui/core";
+import { RequestStatusType } from "../../../main/bll/reducers/app-reducer";
 
 type EditableSpanPropsType = {
-    value: string
-    onChange: (newValue: string) => void
-    entityStatusForTodo?: RequestStatusType
-    entityStatusForTask?: RequestStatusType
-}
+    value: string;
+    onChange: (newValue: string) => void;
+    entityStatusForTodo?: RequestStatusType;
+    entityStatusForTask?: RequestStatusType;
+};
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
-    let [editMode, setEditMode] = useState(false)
-    let [title, setTitle] = useState(props.value)
+    let [editMode, setEditMode] = useState(false);
+    let [title, setTitle] = useState(props.value);
 
     const activateEditMode = () => {
-        setEditMode(true)
-        setTitle(props.value)
-    }
+        setEditMode(true);
+        setTitle(props.value);
+    };
     const activateViewMode = () => {
-        setEditMode(false)
-        props.onChange(title)
-    }
+        setEditMode(false);
+        props.onChange(title);
+    };
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
+        setTitle(e.currentTarget.value);
+    };
 
     return editMode ? (
         <TextField
@@ -43,5 +43,5 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
         >
             {props.value}
         </span>
-    )
-})
+    );
+});
