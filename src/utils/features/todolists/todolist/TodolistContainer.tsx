@@ -28,7 +28,7 @@ const TodolistContainer: React.FunctionComponent<TodolistContPropsType> = React.
 
     useEffect(() => {
         dispatch(setTasksThunk(id))
-    }, [])
+    }, [id])
     
     let allTasksFromState = useSelector(getTaskState)
 

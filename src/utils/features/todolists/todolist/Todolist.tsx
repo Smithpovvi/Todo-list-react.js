@@ -3,11 +3,11 @@ import { AddItemForm } from "../../addItemForm/AddItemForm"
 import { EditableSpan } from "../../editableSpan/EditableSpan"
 import { Button, IconButton } from "@material-ui/core"
 import { Delete } from "@material-ui/icons"
-import { Task } from "../../tasks/Task"
 import { TaskStatuses } from "../../../../main/server-api/todolists-api"
 import { FilterValuesType } from "../../../../main/bll/reducers/todolists-reducer"
 import { TaskStateRootType } from "../../../../main/bll/reducers/tasks-reducer"
 import { RequestStatusType } from "../../../../main/bll/reducers/app-reducer"
+import TasksContainer from "../../tasks/TaskContainer"
 
 type TodolistPropsType = {
     id: string
@@ -67,11 +67,11 @@ const Todolist: React.FunctionComponent<TodolistPropsType> = React.memo((props) 
             <AddItemForm addItem={addTask} disabled={props.entityStatus} />
             <div>
                 {tasksFiltered.map((t) => (
-                    <Task
+                    <TasksContainer
                         key={t.id}
                         task={t}
                         todolistId={id}
-                        entityStatusForTask={t.entityStatus}
+                        entityStatusForTask={entityStatus}
                     />
                 ))}
             </div>
